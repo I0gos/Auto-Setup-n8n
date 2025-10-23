@@ -1,0 +1,24 @@
+#!/bin/bash
+echo "--------- 🟢 Start install docker -----------"
+sudo apt update
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+sudo apt update
+sudo apt install -y docker-ce docker-compose-plugin
+echo "--------- 🔴 Finish install docker -----------"
+
+echo "--------- 🟢 Start creating folder -----------"
+cd ~
+mkdir -p vol_n8n
+sudo chown -R 1000:1000 vol_n8n
+sudo chmod -R 755 vol_n8n
+echo "--------- 🔴 Finish creating folder -----------"
+
+echo "--------- 🟢 Start downloading docker-compose.yml -----------"
+wget -O docker-compose.yml https://raw.githubusercontent.com/I0gos/Auto-Setup-n8n/main/setup-dockerfile
+echo "--------- 🔴 Finish downloading docker-compose.yml -----------"
+
+echo "--------- 🟢 Start docker compose up -----------"
+sudo docker compose up -d
+echo "--------- 🔴 Finish! Wait a few minutes and open n8n at: http://$(curl -s ifconfig.me):5678 -----------"
