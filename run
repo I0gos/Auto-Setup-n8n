@@ -48,6 +48,12 @@ echo "--------- 🟢 docker compose up -d -----------"
 docker compose up -d
 echo "--------- 🔴 Done! -----------"
 
+docker run --rm -v traefik_data:/letsencrypt alpine \
+  sh -c "touch /letsencrypt/acme.json && chmod 600 /letsencrypt/acme.json"
+
+# khởi động lại traefik để ACME chạy lại
+docker compose restart traefik
+
 IP=$(curl -s https://api.ipify.org || echo "<YOUR_PUBLIC_IP>")
 echo "➡️  TẮT proxy (mây xám) khi cấp SSL lần đầu."
 echo "➡️  Mở port trên Alibaba Security Group: TCP 80, 443 (0.0.0.0/0)."
